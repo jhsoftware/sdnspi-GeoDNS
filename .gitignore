@@ -1,0 +1,6 @@
+bin/
+obj/
+country-data/
+test-data/
+*.suo
+*.user

@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5DCBCE5F-6563-49E4-879F-E09C08FB1043}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>GeoDnsPlugIn</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42030,42104,42108,42109,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42024,42032,42036,42099</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42030,42104,42108,42109,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42024,42032,42036,42099</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="sdnsplugin">
+      <HintPath>.\sdnsplugin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AERListBoxMC.Designer.vb">
+      <DependentUpon>AERListBoxMC.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AERListBoxMC.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlTTL.Designer.vb">
+      <DependentUpon>ctlTTL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ctlTTL.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GeoDnsPlugIn_Base.vb" />
+    <Compile Include="GeoDnsPlugIn_CNAME.vb" />
+    <Compile Include="ITCDataSet.vb" />
+    <Compile Include="frmCountry.Designer.vb">
+      <DependentUpon>frmCountry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCountry.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCountryList.Designer.vb">
+      <DependentUpon>frmCountryList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCountryList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRegion.Designer.vb">
+      <DependentUpon>frmRegion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRegion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRegionList.Designer.vb">
+      <DependentUpon>frmRegionList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRegionList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeoDnsConfig.vb" />
+    <Compile Include="GeoDnsPlugIn_IP.vb" />
+    <Compile Include="modPipeEncoder.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OptionsUI.Designer.vb">
+      <DependentUpon>OptionsUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsUI.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QCountry.Designer.vb">
+      <DependentUpon>QCountry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="QCountry.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AERListBoxMC.resx">
+      <DependentUpon>AERListBoxMC.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlTTL.resx">
+      <DependentUpon>ctlTTL.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCountry.resx">
+      <DependentUpon>frmCountry.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCountryList.resx">
+      <DependentUpon>frmCountryList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRegion.resx">
+      <DependentUpon>frmRegion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRegionList.resx">
+      <DependentUpon>frmRegionList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsUI.resx">
+      <DependentUpon>OptionsUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QCountry.resx">
+      <DependentUpon>QCountry.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test-data\countries.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="country-data\countries.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="country-data\regions.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
