@@ -1,22 +1,14 @@
-﻿Imports JHSoftware.SimpleDNS.Plugin
+﻿Imports System.Threading.Tasks
+Imports JHSoftware.SimpleDNS.Plugin
 
 Public Class GeoDnsPlugIn_IP
   Inherits GeoDnsPlugIn_Base
-  Implements IGetHostPlugIn
+  Implements ILookupHost
+  Implements IOptionsUI
 
-  Public Event AsyncError(ByVal ex As System.Exception) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.AsyncError
-  Public Event LogLine(ByVal text As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LogLine
-  Public Event SaveConfig(ByVal config As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.SaveConfig
+  Public Property Host As IHost Implements IPlugInBase.Host
 
 #Region "not implemented"
-
-  Public Sub LookupReverse(ByVal req As JHSoftware.SimpleDNS.Plugin.IDNSRequest, ByRef resultName As JHSoftware.SimpleDNS.Plugin.DomainName, ByRef resultTTL As Integer) Implements JHSoftware.SimpleDNS.Plugin.IGetHostPlugIn.LookupReverse
-    Throw New NotSupportedException
-  End Sub
-
-  Public Sub LookupTXT(ByVal req As JHSoftware.SimpleDNS.Plugin.IDNSRequest, ByRef resultText As String, ByRef resultTTL As Integer) Implements JHSoftware.SimpleDNS.Plugin.IGetHostPlugIn.LookupTXT
-    Throw New NotSupportedException
-  End Sub
 
   Public Sub LoadState(ByVal state As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadState
     REM nothing
@@ -36,50 +28,39 @@ Public Class GeoDnsPlugIn_IP
     Dim rv As IPlugInBase.PlugInTypeInfo
     rv.Name = "GeoDNS (IP)"
     rv.Description = "Serve different IP addresses depending on which country a DNS request originates from"
-    rv.InfoURL = "http://simpledns.com/plugin-geodns"
-    rv.ConfigFile = False
-    rv.MultiThreaded = False
+    rv.InfoURL = "https://simpledns.plus/kb/177/geodns-plug-in"
     Return rv
   End Function
 
-  Public Function GetDNSAskAbout() As JHSoftware.SimpleDNS.Plugin.DNSAskAboutGH Implements JHSoftware.SimpleDNS.Plugin.IGetHostPlugIn.GetDNSAskAbout
-    Dim rv As DNSAskAboutGH
-    rv.Domain = MyConfig.HostName
-    rv.ForwardIPv4 = True
-    rv.ForwardIPv6 = False
-    rv.TXT = False
-    Return rv
-  End Function
-
-  Public Sub Lookup(ByVal req As JHSoftware.SimpleDNS.Plugin.IDNSRequest, ByRef resultIP As JHSoftware.SimpleDNS.Plugin.IPAddress, ByRef resultTTL As Integer) Implements JHSoftware.SimpleDNS.Plugin.IGetHostPlugIn.Lookup
+  Public Async Function LookupHost(req As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As Threading.Tasks.Task(Of LookupResult(Of SdnsIP)) Implements JHSoftware.SimpleDNS.Plugin.ILookupHost.LookupHost
+    If req.QType <> DNSRecType.A OrElse req.QName <> MyConfig.HostName Then Return Nothing
     Dim serv = LookUpServer(req.FromIP)
-    If serv Is Nothing Then Exit Sub
-    resultIP = IPAddressV4.Parse(serv)
-    resultTTL = MyConfig.RespTTL
-  End Sub
+    If serv Is Nothing Then Return Nothing
+    Return New LookupResult(Of SdnsIP) With {.Value = SdnsIPv4.Parse(serv), .TTL = MyConfig.RespTTL}
+  End Function
 
-  Public Function GetOptionsUI(ByVal instanceID As System.Guid, ByVal dataPath As String) As JHSoftware.SimpleDNS.Plugin.OptionsUI Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetOptionsUI
+  Public Function GetOptionsUI(ByVal instanceID As System.Guid, ByVal dataPath As String) As JHSoftware.SimpleDNS.Plugin.OptionsUI Implements JHSoftware.SimpleDNS.Plugin.IOptionsUI.GetOptionsUI
     Return New OptionsUI With {.UseCNAME = False}
   End Function
 
-  Public Sub LoadConfig(ByVal config As String, ByVal instanceID As System.Guid, ByVal dataPath As String, ByRef maxThreads As Integer) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig
+  Public Sub LoadConfig(ByVal config As String, ByVal instanceID As System.Guid, ByVal dataPath As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig
     MyConfig = GeoDnsConfig.Load(config)
   End Sub
 
-  Public Sub StartService() Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.StartService
+  Private Async Function IPlugInBase_StartService() As Task Implements IPlugInBase.StartService
     BaseStartService()
-  End Sub
+  End Function
 
   Public Sub StopService() Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.StopService
     BaseStopService()
   End Sub
 
-  Public Overrides Sub BaseLog(ByVal s As String)
-    RaiseEvent LogLine(s)
+  Public Overrides Sub BaseLog(s As String)
+    Host.LogLine(s)
   End Sub
 
-  Public Overrides Sub BaseAsyncError(ByVal ex As System.Exception)
-    RaiseEvent AsyncError(ex)
+  Public Overrides Sub BaseAsyncError(ex As System.Exception)
+    Host.AsyncError(ex)
   End Sub
 
 End Class

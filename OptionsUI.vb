@@ -2,12 +2,12 @@
 
   Friend Cfg As GeoDnsConfig
   Friend UseCNAME As Boolean
-  Friend IpCtrl As Windows.Forms.Control
+  Friend IpCtrl As ctlIP
 
   Public Overrides Sub LoadData(ByVal config As String)
     If Not UseCNAME Then
       lblDefault.Text = "Default server IP address:"
-      IpCtrl = GetIPCtrl(True, False)
+      IpCtrl = New ctlIP With {.IPVersion = IPVersionEnum.IPv4} ' GetIPCtrl(True, False)
       Me.Controls.Add(IpCtrl)
       IpCtrl.Location = txtServer.Location
       IpCtrl.TabIndex = txtServer.TabIndex
@@ -102,7 +102,7 @@
     End If
 
     Dim x = ""
-    Dim ip As JHSoftware.SimpleDNS.Plugin.IPAddressV4
+    Dim ip As SdnsIPv4
     Dim c As ITCDataSet.Country
 
     Do
@@ -112,7 +112,7 @@
                    "Enter IP address to look up:", cap, x)
       If x.Length = 0 Then Exit Sub
 
-      If Not JHSoftware.SimpleDNS.Plugin.IPAddressV4.TryParse(x.Trim, ip) Then
+      If Not SdnsIPv4.TryParse(x.Trim, ip) Then
         MessageBox.Show("Invalid IP address", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Continue Do
       End If
@@ -133,8 +133,8 @@
       MessageBox.Show("Host name is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
       Return False
     End If
-    Dim dom As JHSoftware.SimpleDNS.Plugin.DomainName
-    If Not JHSoftware.SimpleDNS.Plugin.DomainName.TryParse(txtHostName.Text.Trim, dom) Then
+    Dim dom As DomName
+    If Not DomName.TryParse(txtHostName.Text.Trim, dom) Then
       MessageBox.Show("Invalid host name", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
       Return False
     End If
@@ -155,7 +155,7 @@
         MessageBox.Show("Default server alias is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Return False
       End If
-      If Not JHSoftware.SimpleDNS.Plugin.DomainName.TryParse(txtServer.Text.Trim, dom) Then
+      If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
         MessageBox.Show("Invalid default server alias", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Return False
       End If
@@ -164,8 +164,8 @@
         MessageBox.Show("Default server IP address is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Return False
       End If
-      Dim ip As JHSoftware.SimpleDNS.Plugin.IPAddressV4
-      If Not JHSoftware.SimpleDNS.Plugin.IPAddressV4.TryParse(IpCtrl.Text.Trim, ip) Then
+      Dim ip As SdnsIPv4
+      If Not SdnsIPv4.TryParse(IpCtrl.Text.Trim, ip) Then
         MessageBox.Show("Invalid default server IP address", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Return False
       End If
@@ -175,7 +175,7 @@
   End Function
 
   Public Overrides Function SaveData() As String
-    Cfg.HostName = JHSoftware.SimpleDNS.Plugin.DomainName.Parse(txtHostName.Text.Trim)
+    Cfg.HostName = DomName.Parse(txtHostName.Text.Trim)
     Cfg.DataFile = txtFile.Text.Trim
     Cfg.AutoReload = chkMonitor.Checked
     Cfg.RespTTL = CtlTTL1.Value

@@ -1,5 +1,5 @@
 ﻿Friend Class GeoDnsConfig
-  Friend HostName As JHSoftware.SimpleDNS.Plugin.DomainName
+  Friend HostName As DomName
   Friend DataFile As String
   Friend AutoReload As Boolean
   Friend Regions As New SortedList(Of Integer, Region)
@@ -36,7 +36,7 @@
     Dim ca = PipeDecode(cfg)
     If ca.Length < 1 OrElse ca(0) <> "1" Then Throw New Exception("Unknown configuration data version")
     Dim rv As New GeoDnsConfig
-    rv.HostName = JHSoftware.SimpleDNS.Plugin.DomainName.Parse(ca(1))
+    rv.HostName = DomName.Parse(ca(1))
     rv.DataFile = ca(2)
     rv.AutoReload = (ca(3) = "1")
     rv.RespTTL = Integer.Parse(ca(4))

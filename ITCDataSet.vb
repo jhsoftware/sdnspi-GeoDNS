@@ -24,7 +24,7 @@
     End Function
   End Class
 
-  Function Lookup(ByVal ip As JHSoftware.SimpleDNS.Plugin.IPAddressV4) As Country
+  Function Lookup(ByVal ip As SdnsIPv4) As Country
     If IpRanges.Count = 0 Then Return Nothing
     Dim lv, hv, mv As Integer
     lv = 0

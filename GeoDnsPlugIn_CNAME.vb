@@ -2,11 +2,10 @@
 
 Public Class GeoDnsPlugIn_CNAME
   Inherits GeoDnsPlugIn_Base
-  Implements IGetAnswerPlugIn
+  Implements ILookupAnswer
+  Implements IOptionsUI
 
-  Public Event AsyncError(ByVal ex As System.Exception) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.AsyncError
-  Public Event LogLine(ByVal text As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LogLine
-  Public Event SaveConfig(ByVal config As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.SaveConfig
+  Public Property Host As IHost Implements IPlugInBase.Host
 
 #Region "not implemented"
 
@@ -28,52 +27,43 @@ Public Class GeoDnsPlugIn_CNAME
     Dim rv As IPlugInBase.PlugInTypeInfo
     rv.Name = "GeoDNS (CNAME)"
     rv.Description = "Serve different host name alias (CNAME) depending on which country a DNS request originates from"
-    rv.InfoURL = "http://simpledns.com/plugin-geodns"
-    rv.ConfigFile = False
-    rv.MultiThreaded = False
+    rv.InfoURL = "https://simpledns.plus/kb/177/geodns-plug-in"
     Return rv
   End Function
 
-  Public Function GetDNSAskAbout() As JHSoftware.SimpleDNS.Plugin.DNSAskAbout Implements JHSoftware.SimpleDNS.Plugin.IGetAnswerPlugIn.GetDNSAskAbout
-    Dim rv As DNSAskAbout
-    rv.RRTypes = Nothing ' all types
-    rv.Domain = MyConfig.HostName
-    Return rv
-  End Function
-
-  Public Function Lookup(ByVal request As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As JHSoftware.SimpleDNS.Plugin.DNSAnswer Implements JHSoftware.SimpleDNS.Plugin.IGetAnswerPlugIn.Lookup
+  Public Async Function Lookup(request As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As Threading.Tasks.Task(Of DNSAnswer) Implements JHSoftware.SimpleDNS.Plugin.ILookupAnswer.LookupAnswer
+    If request.QName <> MyConfig.HostName Then Return Nothing
     Dim serv = LookUpServer(request.FromIP)
     If serv Is Nothing Then Return Nothing
     Dim rv = New DNSAnswer
-    rv.Records.Add(New DNSRecord With {.Name = request.QName, _
-                                       .RRType = DNSRRType.Parse("CNAME"), _
-                                       .Data = serv, _
+    rv.RecordsAnswer.Add(New DNSRecord With {.Name = request.QName,
+                                       .RRType = DNSRecType.CNAME,
+                                       .Data = serv,
                                        .TTL = MyConfig.RespTTL})
     Return rv
   End Function
 
-  Public Function GetOptionsUI(ByVal instanceID As System.Guid, ByVal dataPath As String) As JHSoftware.SimpleDNS.Plugin.OptionsUI Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetOptionsUI
+  Public Function GetOptionsUI(ByVal instanceID As System.Guid, ByVal dataPath As String) As JHSoftware.SimpleDNS.Plugin.OptionsUI Implements JHSoftware.SimpleDNS.Plugin.IOptionsUI.GetOptionsUI
     Return New OptionsUI With {.UseCNAME = True}
   End Function
 
-  Public Sub LoadConfig(ByVal config As String, ByVal instanceID As System.Guid, ByVal dataPath As String, ByRef maxThreads As Integer) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig
+  Public Sub LoadConfig(ByVal config As String, ByVal instanceID As System.Guid, ByVal dataPath As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig
     MyConfig = GeoDnsConfig.Load(config)
   End Sub
 
-  Public Sub StartService() Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.StartService
+  Public Async Function StartService() As Threading.Tasks.Task Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.StartService
     BaseStartService()
-  End Sub
+  End Function
 
   Public Sub StopService() Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.StopService
     BaseStopService()
   End Sub
 
-  Public Overrides Sub BaseLog(ByVal s As String)
-    RaiseEvent LogLine(s)
+  Public Overrides Sub BaseLog(s As String)
+    Host.LogLine(s)
   End Sub
 
-  Public Overrides Sub BaseAsyncError(ByVal ex As System.Exception)
-    RaiseEvent AsyncError(ex)
+  Public Overrides Sub BaseAsyncError(ex As Exception)
+    Host.AsyncError(ex)
   End Sub
-
 End Class

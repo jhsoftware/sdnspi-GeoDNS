@@ -16,7 +16,7 @@ Public Class frmRegionList
     frm.Lst = List1
     If Not OptUI.UseCNAME Then
       frm.lblServer.Text = "Server IP address:"
-      frm.IpCtrl = OptUI.GetIPCtrl(True, False)
+      frm.IpCtrl = New ctlIP With {.IPVersion = IPVersionEnum.IPv4}
       frm.GroupBox1.Controls.Add(frm.IpCtrl)
       frm.IpCtrl.Location = frm.txtServer.Location
       frm.IpCtrl.TabIndex = frm.txtServer.TabIndex

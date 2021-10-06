@@ -14,7 +14,7 @@
     <AssemblyName>GeoDnsPlugIn</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>On</OptionStrict>
@@ -24,6 +24,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +36,7 @@
     </DocumentationFile>
     <NoWarn>42030,42104,42108,42109,42353,42354,42355</NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42024,42032,42036,42099</WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,16 +48,18 @@
     </DocumentationFile>
     <NoWarn>42030,42104,42108,42109,42353,42354,42355</NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42024,42032,42036,42099</WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="sdnsplugin">
-      <HintPath>.\sdnsplugin.dll</HintPath>
+    <Reference Include="sdnscommon">
+      <HintPath>..\..\private\sdns\sdnscommon\bin\Release\sdnscommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Import Include="JHSoftware.SimpleDNS" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -69,12 +73,6 @@
       <DependentUpon>AERListBoxMC.vb</DependentUpon>
     </Compile>
     <Compile Include="AERListBoxMC.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ctlTTL.Designer.vb">
-      <DependentUpon>ctlTTL.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ctlTTL.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GeoDnsPlugIn_Base.vb" />
@@ -111,6 +109,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -128,19 +127,10 @@
     <Compile Include="OptionsUI.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="QCountry.Designer.vb">
-      <DependentUpon>QCountry.vb</DependentUpon>
-    </Compile>
-    <Compile Include="QCountry.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AERListBoxMC.resx">
       <DependentUpon>AERListBoxMC.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ctlTTL.resx">
-      <DependentUpon>ctlTTL.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCountry.resx">
       <DependentUpon>frmCountry.vb</DependentUpon>
@@ -162,9 +152,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsUI.resx">
       <DependentUpon>OptionsUI.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="QCountry.resx">
-      <DependentUpon>QCountry.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
