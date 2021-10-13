@@ -32,8 +32,8 @@ Public Class GeoDnsPlugIn_IP
     Return rv
   End Function
 
-  Public Async Function LookupHost(req As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As Threading.Tasks.Task(Of LookupResult(Of SdnsIP)) Implements JHSoftware.SimpleDNS.Plugin.ILookupHost.LookupHost
-    If req.QType <> DNSRecType.A OrElse req.QName <> MyConfig.HostName Then Return Nothing
+  Public Async Function LookupHost(name As DomName, ipv6 As Boolean, req As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As Threading.Tasks.Task(Of LookupResult(Of SdnsIP)) Implements JHSoftware.SimpleDNS.Plugin.ILookupHost.LookupHost
+    If ipv6 OrElse name <> MyConfig.HostName Then Return Nothing
     Dim serv = LookUpServer(req.FromIP)
     If serv Is Nothing Then Return Nothing
     Return New LookupResult(Of SdnsIP) With {.Value = SdnsIPv4.Parse(serv), .TTL = MyConfig.RespTTL}

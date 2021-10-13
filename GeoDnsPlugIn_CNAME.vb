@@ -36,7 +36,7 @@ Public Class GeoDnsPlugIn_CNAME
     Dim serv = LookUpServer(request.FromIP)
     If serv Is Nothing Then Return Nothing
     Dim rv = New DNSAnswer
-    rv.RecordsAnswer.Add(New DNSRecord With {.Name = request.QName,
+    rv.AddRecord(New DNSRecord With {.Name = request.QName,
                                        .RRType = DNSRecType.CNAME,
                                        .Data = serv,
                                        .TTL = MyConfig.RespTTL})
