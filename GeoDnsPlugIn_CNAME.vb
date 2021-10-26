@@ -23,20 +23,20 @@ Public Class GeoDnsPlugIn_CNAME
 
 #End Region
 
-  Public Function GetPlugInTypeInfo() As JHSoftware.SimpleDNS.Plugin.IPlugInBase.PlugInTypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetPlugInTypeInfo
+  Public Function GetPlugInTypeInfo() As JHSoftware.SimpleDNS.Plugin.IPlugInBase.PlugInTypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetTypeInfo
     Dim rv As IPlugInBase.PlugInTypeInfo
     rv.Name = "GeoDNS (CNAME)"
     rv.Description = "Serve different host name alias (CNAME) depending on which country a DNS request originates from"
-    rv.InfoURL = "https://simpledns.plus/kb/177/geodns-plug-in"
+    rv.InfoURL = "https://simpledns.plus/plugin-geodns"
     Return rv
   End Function
 
-  Public Async Function Lookup(request As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As Threading.Tasks.Task(Of DNSAnswer) Implements JHSoftware.SimpleDNS.Plugin.ILookupAnswer.LookupAnswer
+  Public Async Function Lookup(request As IRequestContext) As Threading.Tasks.Task(Of DNSAnswer) Implements JHSoftware.SimpleDNS.Plugin.ILookupAnswer.LookupAnswer
     If request.QName <> MyConfig.HostName Then Return Nothing
     Dim serv = LookUpServer(request.FromIP)
     If serv Is Nothing Then Return Nothing
     Dim rv = New DNSAnswer
-    rv.AddRecord(New DNSRecord With {.Name = request.QName,
+    rv.Answer.Add(New DNSRecord With {.Name = request.QName,
                                        .RRType = DNSRecType.CNAME,
                                        .Data = serv,
                                        .TTL = MyConfig.RespTTL})

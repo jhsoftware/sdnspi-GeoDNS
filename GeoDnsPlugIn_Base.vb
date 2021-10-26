@@ -98,7 +98,7 @@ Public MustInherit Class GeoDnsPlugIn_Base
     Return rv
   End Function
 
-  Public Async Function QuestionAsk(ByVal id As Integer, value As String, ByVal req As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As Threading.Tasks.Task(Of Boolean) Implements JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionAsk
+  Public Async Function QuestionAsk(ByVal id As Integer, value As String, ByVal req As IRequestContext) As Threading.Tasks.Task(Of Boolean) Implements JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionAsk
     If req.FromIP Is Nothing Then Return False
     If Not TypeOf req.FromIP Is SdnsIPv4 Then Return False
     Dim c = MyDataSet.Lookup(DirectCast(req.FromIP, SdnsIPv4))

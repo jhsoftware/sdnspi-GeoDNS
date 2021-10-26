@@ -24,15 +24,15 @@ Public Class GeoDnsPlugIn_IP
 
 #End Region
 
-  Public Function GetPlugInTypeInfo() As JHSoftware.SimpleDNS.Plugin.IPlugInBase.PlugInTypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetPlugInTypeInfo
+  Public Function GetPlugInTypeInfo() As JHSoftware.SimpleDNS.Plugin.IPlugInBase.PlugInTypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetTypeInfo
     Dim rv As IPlugInBase.PlugInTypeInfo
     rv.Name = "GeoDNS (IP)"
     rv.Description = "Serve different IP addresses depending on which country a DNS request originates from"
-    rv.InfoURL = "https://simpledns.plus/kb/177/geodns-plug-in"
+    rv.InfoURL = "https://simpledns.plus/plugin-geodns"
     Return rv
   End Function
 
-  Public Async Function LookupHost(name As DomName, ipv6 As Boolean, req As JHSoftware.SimpleDNS.Plugin.IDNSRequest) As Threading.Tasks.Task(Of LookupResult(Of SdnsIP)) Implements JHSoftware.SimpleDNS.Plugin.ILookupHost.LookupHost
+  Public Async Function LookupHost(name As DomName, ipv6 As Boolean, req As IRequestContext) As Threading.Tasks.Task(Of LookupResult(Of SdnsIP)) Implements JHSoftware.SimpleDNS.Plugin.ILookupHost.LookupHost
     If ipv6 OrElse name <> MyConfig.HostName Then Return Nothing
     Dim serv = LookUpServer(req.FromIP)
     If serv Is Nothing Then Return Nothing
