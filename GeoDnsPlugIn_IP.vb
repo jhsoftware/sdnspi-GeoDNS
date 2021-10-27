@@ -8,24 +8,12 @@ Public Class GeoDnsPlugIn_IP
 
   Public Property Host As IHost Implements IPlugInBase.Host
 
-#Region "not implemented"
-
-  Public Sub LoadState(ByVal state As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadState
-    REM nothing
-  End Sub
-
-  Public Function SaveState() As String Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.SaveState
-    Return ""
-  End Function
-
   Public Function InstanceConflict(ByVal config1 As String, ByVal config2 As String, ByRef errorMsg As String) As Boolean Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.InstanceConflict
     Return False
   End Function
 
-#End Region
-
-  Public Function GetPlugInTypeInfo() As JHSoftware.SimpleDNS.Plugin.IPlugInBase.PlugInTypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetTypeInfo
-    Dim rv As IPlugInBase.PlugInTypeInfo
+  Public Function GetPlugInTypeInfo() As TypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetTypeInfo
+    Dim rv As TypeInfo
     rv.Name = "GeoDNS (IP)"
     rv.Description = "Serve different IP addresses depending on which country a DNS request originates from"
     rv.InfoURL = "https://simpledns.plus/plugin-geodns"
