@@ -52,7 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="sdnscommon">
-      <HintPath>..\..\private\sdns\sdnscommon\bin\Release\sdnscommon.dll</HintPath>
+      <HintPath>..\sdnscommon\sdnscommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />

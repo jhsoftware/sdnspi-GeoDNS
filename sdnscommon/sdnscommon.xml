@@ -1,0 +1,439 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+sdnscommon
+</name>
+</assembly>
+<members>
+<member name="T:JHSoftware.SimpleDNS.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.DomName.TryParseMFString(System.String,JHSoftware.SimpleDNS.DomName,JHSoftware.SimpleDNS.DomName@)">
+ <summary>**** Not thread safe ****</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.ICloneAnswer">
+ <summary>Defines a CloneAnswer Plug-In for Simple DNS Plus</summary>
+ <remarks>Implement this interface to create a CloneAnswer plug-in for Simple DNS Plus.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ICloneAnswer.LookupCloneAnswer(JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Perform an clone name lookup</summary>
+ <param name="ctx">DNS request context information.</param>
+ <returns>Result object, or Null/Nothing if no alias is found.</returns>
+ <remarks>Simple DNS Plus creates a cloned answer based on the prefixLabels, cloneFromZone and forceAA parameters.
+ First a "clone QName" is constructed from the prefix + cloneFromZone.
+ Then a new DNS request for "clone QName" and same query type (A, MX, etc.) as original request is processed.
+ The resulting DNS answer is cloned by changing record names as well as domain names in record data.
+ Names that end with cloneFromZone will have this ending changed to the originally requested zone name (request.QName less prefix).
+ IMPORTANT: Plug-ins will be re-queried using "clone QName", so it is important to design this function so that this does not cause an endless loop.</remarks>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.ICloneAnswer.Result.CloneFromZone">
+ <summary>Name of zone to clone answer from</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.ICloneAnswer.Result.PrefixLabels">
+ <summary>The number of labels (segment between dots) of request.QName (from left) that make up the "prefix". Return 0 for no prefix (QName = Zone name)</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.ICloneAnswer.Result.ForceAA">
+ <summary>True if the AA flag (authoritative) should be set in cloned answer. Return false to use the AA falg value from the answer that is being cloned</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IRequestContext">
+ <summary>Provides information about an incoming DNS request</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IRequestContext.FromIP">
+ <summary>The IP address that the DNS request came from</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IRequestContext.RD">
+ <summary>Indicates if the sender requested recursion (RD request header flag).</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IRequestContext.QName">
+ <summary>The requested domain name</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IRequestContext.QType">
+ <summary>The requested DNS record type</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IRequestContext.QNameIP">
+ <summary>IP address (in reverse) represented by leading labels of requested domain names in reverse and DNSBL lookups.</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IRequestContext.RA">
+ <summary>Indicates if Simple DNS Plus provides recursion for this request (RA response header flag)</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IRequestContext.AA">
+ <summary>Indicates if Simple DNS Plus is authoritative for the requested name (AA response header flag)</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.ILookupAnswer">
+ <summary>Defines a Get Answer Plug-In for Simple DNS Plus</summary>
+ <remarks>Implement this interface to create a Get Answer plug-in for Simple DNS Plus.
+ NOTE: Plug-Ins based on this interface require an "Unlimited zones" license for Simple DNS Plus.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ILookupAnswer.LookupAnswer(JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Perform a DNS lookup.</summary>
+ <param name="ctx">DNS request and context information</param>
+ <returns>A DNS answer if found, otherwise nothing/null.</returns>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.DNSAnswer">
+ <summary>Represents a DNS answer returned to Simple DNS Plus by the IGetAnswerPlugIn.Lookup function.</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSAnswer.AA">
+ <summary>Authoritative Answer header flag</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSAnswer.RCode">
+ <summary>Response code</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSAnswer.Answer">
+ <summary>DNS records in Answer section</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSAnswer.Authority">
+ <summary>DNS records in Authority section</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSAnswer.Additional">
+ <summary>DNS records in Additional section</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.DNSRecord">
+ <summary>Represents an individual DNS record</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSRecord.Name">
+ <summary>Name of DNS record</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSRecord.RRType">
+ <summary>DNS record type (A, MX, etc.)</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSRecord.TTL">
+ <summary>Time To Live in seconds</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.DNSRecord.Data">
+ <summary>DNS record data in zone file format</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.ILookupHost">
+ <summary>Defines a Get Host Plug-In for Simple DNS Plus</summary>
+ <remarks>Implement this interface to create a Get Host plug-in for Simple DNS Plus.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ILookupHost.LookupHost(JHSoftware.SimpleDNS.DomName,System.Boolean,JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Perform a forward DNS lookup.</summary>
+ <param name="name">The host name to lookup</param>
+ <param name="ipv6">IPv6 address requested (IPv4 if false)</param>
+ <param name="ctx">DNS request and context information</param>
+ <returns>Result object with the IP address to return. Null/Nothing if no match is found.</returns>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ILookupTXT.LookupTXT(JHSoftware.SimpleDNS.DomName,JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Perform a TXT-record lookup.</summary>
+ <param name="name">The host name to lookup</param>
+ <param name="ctx">DNS request and context information</param>
+ <returns>Result object with the text value to return. Null/Nothing if no match is found.</returns>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ILookupReverse.LookupReverse(JHSoftware.SimpleDNS.SdnsIP,JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Perform a reverse DNS lookup.</summary>
+ <param name="ip">The IP address to lookup</param>
+ <param name="ctx">DNS request and context information</param>
+ <returns>Result object with host name to return. Null/Nothing if no match is found.</returns>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.LookupResult`1.Value">
+ <summary>The resulting value</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.LookupResult`1.TTL">
+ <summary>The TTL (Time To Live) value to return - in seconds</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IHost.LogLine(System.String)">
+ <summary>Call this method to record a message to the Simple DNS Plus log.</summary>
+ <param name="text">The message to record in the log</param>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IHost.SaveConfig(System.String)">
+ <summary>Call this method to save configuration data</summary>
+ <param name="config">Configuration data (user defined format)</param>
+ <remarks>Should only be used when the plug-in configuration is changed by something other than the Options dialog.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IHost.AsyncError(System.Exception)">
+ <summary>Call this method to log an exception from an asynchronous operation.</summary>
+ <param name="ex">The Exception object</param>
+ <remarks>Plug-in operations executing in seperate threads (asynchronous methods) should catch all unhandled exceptions, and call this method with the exception,
+ Otherwise Simple DNS Plus will crash in case of such an exception.
+ Execeptions in methods executing in Simple DNS Plus' own threads are automatically caught and should not call this method.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IHost.Signal(System.Int32,System.Object)">
+ <summary>Signal from plug-in to the Simple DNS Plus host - Details defined per signal code (code parameter)</summary>
+ <param name="code">Signal code</param>
+ <param name="data">Signal data</param>
+ <returns>A Task which can be awaited to get result of signal operation (object)</returns>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IHost.UpdateHost(JHSoftware.SimpleDNS.DomName,JHSoftware.SimpleDNS.SdnsIP,System.Int32,System.String)">
+ <summary>Call this function to update a host record (A/AAAA) in a local primary DNS zone.</summary>
+ <param name="hostName">The name of the host record to update</param>
+ <param name="ipAddress">The IP address of the host - or null/nothing to delete any existing host records for the name</param>
+ <param name="ttl">DNS record TTL value. Specify -1 to use the zone's default TTL value</param>
+ <param name="comment">Any comments to be stored with the DNS record in the zone file</param>
+ <returns>A Task which can be awaited to get result of operation</returns>
+ <remarks>The update will fail unless a local primary zone with a parent name of the host name exists</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IHost.UpdateHostReverse(JHSoftware.SimpleDNS.SdnsIP,JHSoftware.SimpleDNS.DomName,System.Int32,System.String)">
+ <summary>Call this function to update a reverse DNS record (PTR) in a local primary reverse DNS zone (IPv4 or IPv6).</summary>
+ <param name="ipAddress">The IP address of the reverse DNS record.</param>
+ <param name="hostName">The host name for the IP address- or root to delete any existing host records for the name</param>
+ <param name="ttl">DNS record TTL value. Specify -1 to use the zone's default TTL value</param>
+ <param name="comment">Any comments to be stored with the DNS record in the zone file</param>
+ <returns>A Task which can be awaited to get result of operation</returns>
+ <remarks>The update will fail unless a local primary reverse zone for the IP address exists</remarks>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IIgnoreRequest">
+ <summary>Defines an "Ignore DNS Request" Plug-In for Simple DNS Plus</summary>
+ <remarks>Implement this interface to create an "Ignore DNS Request" plug-in for Simple DNS Plus.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IIgnoreRequest.IgnoreRequest(JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Check if a DNS request should be ignored (not answered).</summary>
+ <param name="ctx">DNS request and context information.</param>
+ <returns>True if Simple DNS Plus should ignore the DNS request.</returns>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IPlugInBase">
+ <summary>Base plug-in interface</summary>
+</member>
+<member name="P:JHSoftware.SimpleDNS.Plugin.IPlugInBase.Host">
+ <summary>Object with methods to communicate with the Simple DNS Plus host.</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetTypeInfo">
+ <summary>Simple DNS Plus calls this method to retrieve general information about this plug-in type.</summary>
+ <remarks>Provide static information about the plug-in type only - not anything specific to a plug-in instance.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IPlugInBase.InstanceConflict(System.String,System.String,System.String@)">
+ <summary>Simple DNS Plus calls this function to determine if two plug-in instance conflict with each other.</summary>
+ <param name="config1">Configuration string of first plug-in instance.</param>
+ <param name="config2">Configuration string of second plug-in instance.</param>
+ <param name="errorMsg">If the plug-in instances conflict, supply an error message.</param>
+ <returns>True if the plug-in instances conflict, False if they do not.</returns>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig(System.String,System.Guid,System.String)">
+ <summary>Load plug-in configuration.</summary>
+ <param name="config">Configuration data (user defined format). Corresponds to the string returned by the OptionsUI.SaveData method.</param>
+ <param name="instanceID">Unique ID for current plug-in instance</param>
+ <param name="dataPath">Data file path used by Simple DNS Plus</param>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IPlugInBase.StartService">
+ <summary>Start the plug-in service.</summary>
+ <remarks>Simple DNS Plus will not start sending DNS requests to the plug-in before this completes.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IPlugInBase.StopService">
+ <summary>Stop the plug-in service.</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.TypeInfo">
+ <summary>Describes a plug-in</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.TypeInfo.Name">
+ <summary>The display name of the plug-in type. This is the name listed in the Simple DNS Plus Options dialog / Plug-Ins / Available plug-in components section.</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.TypeInfo.Description">
+ <summary>A description of what the plug-in is and does. This is displayed in the plug-in information dialog.</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.TypeInfo.InfoURL">
+ <summary>Supply a URL that provides more information about the plug-in type. This is used as the destination of a hyperlink in the plug-in information dialog and in the plug-in instance dialog.</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.INoDNS">
+ <summary>Implement in plug-ins that provide no DNS lookup functionality</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IOptionsUI">
+ <summary>Implement in plug-ins that provide a UI to configure plug-in options</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IOptionsUI.GetOptionsUI(System.Guid,System.String)">
+ <summary>Simple DNS Plus calls this method to retrieve a user control to host in the Plug-in Instance dialog / Plug-In Settings tab.</summary>
+ <param name="instanceID">Unique ID for current plug-in instance</param>
+ <param name="dataPath">Data file path used by Simple DNS Plus</param>
+ <returns>Windows Forms user control inheriting from OptionsUI</returns>
+<remarks>Return null/Nothing if plug-in doesn't have any settings</remarks>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.ISignal">
+ <summary>Implement in plug-ins that need to receive signal data from Simple DNS Plus</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ISignal.Signal(System.Int32,System.Object)">
+ <summary>Signal from Simple DNS Plus host to plug-in - Details defined per signal code (code parameter)</summary>
+ <param name="code">Signal code</param>
+ <param name="data">Signal data</param>
+ <returns>A Task which can be awaited (by the Simple DNS Plus host) to get result of signal operation</returns>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IState">
+ <summary>Implement in plug-ins that need to keep state between runs</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IState.SaveState">
+ <summary>Save the current state of the plug-in</summary>
+ <returns>State data (user defined format)</returns>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IState.LoadState(System.String)">
+ <summary>Load plug-in state</summary>
+ <param name="state">State data (user defined format)</param>
+ <remarks>The state data corresponds to the string returned by the SaveState method.</remarks>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IQuestions">
+ <summary>Implement this interface in plug-ins that provide one or more questions that Simple DNS Plus can ask of the plug-in.</summary>
+ <remarks>In Simple DNS Plus v. 5.2, these questions are used only in DNS request access rules for other plug-ins.
+ Future Simple DNS Plus versions may define other uses for them.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionList">
+ <summary>Called by Simple DNS Plus to retrieve a list of questions answered by this plug-in.</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionAsk(System.Int32,System.String,JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Called by Simple DNS Plus to ask a question</summary>
+ <param name="idx">The index (zero based) of the question being asked.</param>
+ <param name="value">String value entered at configuration (ValuePrompt).</param>
+ <param name="ctx">DNS request and context information</param>
+ <returns>Answer to the question (true/false)</returns>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionInfo">
+ <summary>Information about a question</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionInfo.Question">
+ <summary>The question in text</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionInfo.ValuePrompt">
+ <summary>The text to display to prompt the user for text value. Null/Nothing is user should not be prompted for this.</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IListsIPAddress">
+ <summary>Implement this interface in plug-ins that in some way lists IP addresses.
+ This can be used to create DNS request access rules for other plug-ins. I.E. "allow access if plug-in xyz lists the sender's IP address".</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IListsIPAddress.ListsIPAddress(JHSoftware.SimpleDNS.SdnsIP)">
+ <summary>Test if plug-in lists an IP address</summary>
+ <param name="ip">The IP address to look for</param>
+ <returns>True if the IP address is listed</returns>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IListsDomainName">
+ <summary>Implement this interface in plug-ins that in some way lists domain names.
+ This can be used to create DNS request access rules for other plug-ins. I.E. "allow access if plug-in xyz lists the requested domain name".</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IListsDomainName.ListsDomainName(JHSoftware.SimpleDNS.DomName)">
+ <summary>The if plug-in lists a domain name</summary>
+ <param name="domain">The domain name to look for</param>
+ <returns>True if the domain name is listed</returns>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.ISkip">
+ <summary>Defines a Skip Plug-In for Simple DNS Plus</summary>
+ <remarks>Implement this interface to create a Skip plug-in for Simple DNS Plus.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ISkip.LookupSkip(JHSoftware.SimpleDNS.Plugin.IRequestContext)">
+ <summary>Perform a DNS lookup.</summary>
+ <param name="ctx">DNS request and context information</param>
+ <returns>How many plug-in instances to skip. Return -1 to skip all remaining plug-in instances.</returns>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.ITSIGUpdateHost">
+ <summary>Implement this interface in plug-ins which can authenticate and process TSIG signed
+  dynamic update requests for a single host record</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ITSIGUpdateHost.GetTSIGKeySecret(JHSoftware.SimpleDNS.DomName,System.String)">
+ <summary>Called by Simple DNS Plus to get the key value (secret) for a TSIG key in order to verify a TSIG signature of a received dynamic DNS update packet.</summary>
+ <param name="keyName">The TSIG key name (user ID) presented by the client</param>
+ <param name="Algorithm">The signing algorithm used (HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA384 or HMAC-SHA512)</param>
+ <returns>TSIG key value (secret), or null/nothing if keyName does not exist</returns>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ITSIGUpdateHost.TSIGUpdateHost(JHSoftware.SimpleDNS.SdnsIP,JHSoftware.SimpleDNS.DomName,System.String,JHSoftware.SimpleDNS.DomName,JHSoftware.SimpleDNS.SdnsIP,System.Int32)">
+ <summary>Called by Simple DNS Plus to complete a TSIG signed dynamic DNS update</summary>
+ <param name="fromIP">The IP address that the update request originates from</param>
+ <param name="keyName">The TSIG key name (user ID) presented by the client</param>
+ <param name="Algorithm">The signing algorithm used (HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA384 or HMAC-SHA512)</param>
+ <param name="hostName">The name of the updated host record</param>
+ <param name="ipAddress">The IP address of the updated host record</param>
+ <param name="ttl">The TTL (time to live) value of the updated host record</param>
+ <returns>False if the request update is not allowed - otherwise true</returns>
+ <remarks>Simple DNS Plus will call this method after calling GetTSIGKeySecret only if the TSIG signature was verfied.</remarks>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.IViewUI">
+ <summary>Implement this interface in plug-ins that have a View (main Simple DNS Plus Windows / View menu).</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IViewUI.GetViewUI">
+ <summary>Simple DNS Plus calls this function to retrieve an instance of a View UI control.</summary>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.IViewUI.MsgFromViewUI(System.Int32,System.Byte[])">
+ <summary>A message has been received from a View UI instance</summary>
+ <param name="connID">The connection ID of the View UI sending the message. This ID can be used for sending a message back to the same ViewUI throught the MsgToViewUI event.</param>
+ <param name="msg">The message data received (format/content defined by plug-in)</param>
+ <remarks>This method is called by the ViewUI.SendMsgToService (via Simple DNS Plus infrastructure).
+ Several View UIs may be connected at the same time, for example if the server computer has multiple terminal server sessions open.</remarks>
+</member>
+<member name="E:JHSoftware.SimpleDNS.Plugin.IViewUI.MsgToViewUI">
+ <summary>Raise this event to send a message to the View UI.</summary>
+ <param name="connID">Connection ID of the View UI to send the message to. Use -1 to send the message to all connected View UIs.</param>
+ <param name="msg">The message data to send (format/content defined by plug-in)</param>
+ <remarks>Raising this event calls the ViewUI.MsgFromService method (via Simple DNS Plus infrastructure).
+Several View UIs may be connected at the same time, for example if the server computer has multiple terminal server sessions open.</remarks>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.OptionsUI">
+ <summary>GUI control for configuring plug-in settings hosted in the Plug-in Instance dialog / Plug-In Settings tab.</summary>
+ <remarks>Create a user control inheriting from this and return and instance of that in the IGethostPlugIn.GetOptionUI method.</remarks>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.OptionsUI.RemoteGUI">
+ <summary>Simple DNS Plus sets this to true if GUI is currently connected to another machine.</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.OptionsUI.GetServerIPs">
+ <summary>Invoke this to retrieve a list of local IP addresses and their subnets (IPv4 only) on the server</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.OptionsUI.GetServerIPsDG">
+ <summary>Delegation definition for GetServerIPs</summary>
+ <returns>List of local IP addresses and their subnets (IPv4 only) on the server.</returns>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.OptionsUI.LoadData(System.String)">
+ <summary>Load plug-in configuration data into OptionsUI</summary>
+ <param name="config">Configuration data (user defined format). Null/Nothing for new plug-in instances.</param>
+ <remarks>The configuration data corresponds to the string returned by the SaveData method.
+ Simple DNS Plus calls this method when the Plug-In Instance dialog is opened.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.OptionsUI.ValidateData">
+ <summary>Validate the data entered by the user in the OptionsUI</summary>
+ <returns>True if the data entered is valid, otherwise False.</returns>
+ <remarks>Simple DNS Plus calls this method when the user clicks the OK button in the Plug-In Instance dialog.
+ If the entered data is invalid (method returning False), you should show a message box explaining the problem.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.OptionsUI.SaveData">
+ <summary>Save the configuration data entered by the user in the OptionsUI</summary>
+ <returns>Configuration data (user defined format)</returns>
+ <remarks>The data returned by this method is used by the LoadData method and the IPlugInBase.LoadConfig method.
+ Simple DNS Plus calls this method only after calling ValidateData and only if ValidateData returns True.</remarks>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.OptionsUI.IPandSubnet">
+ <summary>Represents an local interface IP addresses and subnet</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.OptionsUI.IPandSubnet.IPAddr">
+ <summary>IP address</summary>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.OptionsUI.IPandSubnet.SubnetMaskSize">
+ <summary>Subnet mask size in bits</summary>
+</member>
+<member name="T:JHSoftware.SimpleDNS.Plugin.ViewUI">
+ <summary>GUI control representing a plug-in View UI - a tab in the Simple DNS Plus main window.</summary>
+ <remarks>Create a user control inheriting from this and return and instance of that in the IGethostPlugIn.GetViewUI method.</remarks>
+</member>
+<member name="F:JHSoftware.SimpleDNS.Plugin.ViewUI.RemoteGUI">
+ <summary>Simple DNS Plus sets this to true if GUI is currently connected to another machine.</summary>
+</member>
+<member name="E:JHSoftware.SimpleDNS.Plugin.ViewUI.MsgFromViewUI">
+ <summary>This event is handled by Simple DNS Plus and must not be handled any by plug-in code.</summary>
+ <param name="msg">N/A</param>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ViewUI.SendMsgToService(System.Byte[])">
+ <summary>Send a message to the plug-in service.</summary>
+ <param name="msg">The message data to send (format/content defined by plug-in)</param>
+ <remarks>This method calls the IGetHostPlugIn.MsgFromViewUI method (via Simple DNS Plus infrastructure)</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ViewUI.MsgFromService(System.Byte[])">
+ <summary>A message has been received from the plug-in service.</summary>
+ <param name="msg">The message data to send (format/content defined by plug-in)</param>
+ <remarks>This method is called (via Simple DNS Plus infrastructure) when the IgetHostPlugIn.MsgToViewUI event is raised.</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ViewUI.SaveLayout">
+ <summary>Save the current window layout</summary>
+ <returns>Layout data (user defined format)</returns>
+ <remarks>Called by Simple DNS Plus before closing ViewUI</remarks>
+</member>
+<member name="M:JHSoftware.SimpleDNS.Plugin.ViewUI.LoadLayout(System.String)">
+ <summary>Load window layout</summary>
+ <param name="layout">Layout data (user defined format)</param>
+ <remarks>Called by Simple DNS Plus when loading ViewUI.
+ Load layout previously saved through SaveLayout method.</remarks>
+</member>
+</members>
+</doc>

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GeoDNS", "GeoDNS.vbproj", "{5DCBCE5F-6563-49E4-879F-E09C08FB1043}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GeoDNS", "plugin\GeoDNS.vbproj", "{5DCBCE5F-6563-49E4-879F-E09C08FB1043}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GuiTest", "GuiTest\GuiTest.vbproj", "{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{5DCBCE5F-6563-49E4-879F-E09C08FB1043}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DCBCE5F-6563-49E4-879F-E09C08FB1043}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DCBCE5F-6563-49E4-879F-E09C08FB1043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BDD68650-8BF9-44CC-94AB-6EF8724BE49D}
 	EndGlobalSection
 EndGlobal
