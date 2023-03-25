@@ -6,7 +6,7 @@ Public Class Form1
   ' Dim pi As IPlugInBase
 
   Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
-    Dim pi = New GeoDnsPlugIn_CNAME
+    Dim pi = New GeoDnsPlugIn
     oui = pi.GetOptionsUI(Guid.NewGuid, "")
     Me.Controls.Add(oui)
 

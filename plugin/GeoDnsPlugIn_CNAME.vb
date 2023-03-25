@@ -1,6 +1,6 @@
 ﻿Imports JHSoftware.SimpleDNS.Plugin
 
-Public Class GeoDnsPlugIn_CNAME
+Public Class GeoDnsPlugIn
   Inherits GeoDnsPlugIn_Base
   Implements ILookupAnswer
   Implements IOptionsUI
@@ -13,7 +13,7 @@ Public Class GeoDnsPlugIn_CNAME
 
   Public Function GetPlugInTypeInfo() As TypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetTypeInfo
     Dim rv As TypeInfo
-    rv.Name = "GeoDNS (CNAME)"
+    rv.Name = "GeoDNS"
     rv.Description = "Serve different host name alias (CNAME) depending on which country a DNS request originates from"
     rv.InfoURL = "https://simpledns.plus/plugin-geodns"
     Return rv
