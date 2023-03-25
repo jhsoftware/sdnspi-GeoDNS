@@ -103,7 +103,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GeoDnsConfig.vb" />
-    <Compile Include="GeoDnsPlugIn_IP.vb" />
     <Compile Include="modPipeEncoder.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

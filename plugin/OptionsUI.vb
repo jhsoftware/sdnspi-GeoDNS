@@ -1,19 +1,8 @@
 ﻿Public Class OptionsUI
 
   Friend Cfg As GeoDnsConfig
-  Friend UseCNAME As Boolean
-  Friend IpCtrl As ctlIP
 
   Public Overrides Sub LoadData(ByVal config As String)
-    If Not UseCNAME Then
-      lblDefault.Text = "Default server IP address:"
-      IpCtrl = New ctlIP With {.IPVersion = IPVersionEnum.IPv4} ' GetIPCtrl(True, False)
-      Me.Controls.Add(IpCtrl)
-      IpCtrl.Location = txtServer.Location
-      IpCtrl.TabIndex = txtServer.TabIndex
-      txtServer.Visible = False
-    End If
-
     If config Is Nothing Then
       REM new instance
       Cfg = GeoDnsConfig.LoadDefault
@@ -24,13 +13,8 @@
       txtFile.Text = Cfg.DataFile
       chkMonitor.Checked = Cfg.AutoReload
       CtlTTL1.Value = Cfg.RespTTL
-      If UseCNAME Then
-        txtServer.Text = Cfg.DefaultServer
-      Else
-        IpCtrl.Text = Cfg.DefaultServer
-      End If
+      txtServer.Text = Cfg.DefaultServer
     End If
-
   End Sub
 
   Private Sub btnCountries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCountries.Click
@@ -150,25 +134,13 @@
       End If
     End If
 
-    If UseCNAME Then
-      If txtServer.Text.Trim.Length = 0 Then
-        MessageBox.Show("Default server alias is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
-      If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
-        MessageBox.Show("Invalid default server alias", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
-    Else
-      If IpCtrl.Text.Trim.Length = 0 Then
-        MessageBox.Show("Default server IP address is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
-      Dim ip As SdnsIPv4
-      If Not SdnsIPv4.TryParse(IpCtrl.Text.Trim, ip) Then
-        MessageBox.Show("Invalid default server IP address", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
+    If txtServer.Text.Trim.Length = 0 Then
+      MessageBox.Show("Default server alias is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
+      Return False
+    End If
+    If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
+      MessageBox.Show("Invalid default server alias", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
+      Return False
     End If
 
     Return True
@@ -179,7 +151,7 @@
     Cfg.DataFile = txtFile.Text.Trim
     Cfg.AutoReload = chkMonitor.Checked
     Cfg.RespTTL = CtlTTL1.Value
-    Cfg.DefaultServer = If(UseCNAME, txtServer.Text.Trim, IpCtrl.Text.Trim)
+    Cfg.DefaultServer = txtServer.Text.Trim
     Return Cfg.Save
   End Function
 

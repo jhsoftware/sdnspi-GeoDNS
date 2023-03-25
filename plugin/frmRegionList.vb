@@ -8,28 +8,16 @@ Public Class frmRegionList
     For Each r In OptUI.Cfg.Regions.Values
       List1.Add(New LstItm With {.ID = r.ID, .Name = r.Name, .Server = r.Server})
     Next
-    List1.Columns(1).Text = If(OptUI.UseCNAME, "Server alias", "Server IP address")
+    List1.Columns(1).Text = "Server alias"
   End Sub
 
   Private Sub List1_EditItem(ByVal curItem As Object) Handles List1.EditItem
     Dim frm = New frmRegion
     frm.Lst = List1
-    If Not OptUI.UseCNAME Then
-      frm.lblServer.Text = "Server IP address:"
-      frm.IpCtrl = New ctlIP With {.IPVersion = IPVersionEnum.IPv4}
-      frm.GroupBox1.Controls.Add(frm.IpCtrl)
-      frm.IpCtrl.Location = frm.txtServer.Location
-      frm.IpCtrl.TabIndex = frm.txtServer.TabIndex
-      frm.txtServer.Visible = False
-    End If
     If curItem IsNot Nothing Then
       With DirectCast(curItem, LstItm)
         frm.txtName.Text = .Name
-        If OptUI.UseCNAME Then
-          frm.txtServer.Text = .Server
-        Else
-          frm.IpCtrl.Text = .Server
-        End If
+        frm.txtServer.Text = .Server
         frm.CurID = .ID
       End With
     End If

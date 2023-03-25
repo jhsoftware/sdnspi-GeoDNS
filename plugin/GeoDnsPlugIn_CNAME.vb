@@ -32,7 +32,7 @@ Public Class GeoDnsPlugIn_CNAME
   End Function
 
   Public Function GetOptionsUI(ByVal instanceID As System.Guid, ByVal dataPath As String) As JHSoftware.SimpleDNS.Plugin.OptionsUI Implements JHSoftware.SimpleDNS.Plugin.IOptionsUI.GetOptionsUI
-    Return New OptionsUI With {.UseCNAME = True}
+    Return New OptionsUI
   End Function
 
   Public Sub LoadConfig(ByVal config As String, ByVal instanceID As System.Guid, ByVal dataPath As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig
