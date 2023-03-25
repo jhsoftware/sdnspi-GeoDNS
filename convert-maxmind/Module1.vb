@@ -40,11 +40,11 @@ Module Module1
     If sr Is Nothing Then Return False
     sr.ReadLine() 'first line is header
     Dim LineNo = 1
-    Dim parts As String()
+    Dim parts As List(Of String)
     While Not sr.EndOfStream
       LineNo += 1
       Try
-        parts = ParseCSVLine(sr.ReadLine()).ToArray()
+        parts = ParseCSVLine(sr.ReadLine())
         If parts(4).Length = 2 Then Locations.Add(Integer.Parse(parts(0)), parts(4))
       Catch ex As Exception
         Console.WriteLine("Error in line " & LineNo & ": " & ex.Message)
@@ -63,11 +63,11 @@ Module Module1
     sr.ReadLine() 'first line is header
     Dim LineNo = 1
     Dim loc1 As Integer, loc2 As Integer, cntry As String
-    Dim itm As Item, parts As String()
+    Dim itm As Item, parts As List(Of String)
     While Not sr.EndOfStream
       LineNo += 1
       Try
-        parts = ParseCSVLine(sr.ReadLine()).ToArray()
+        parts = ParseCSVLine(sr.ReadLine())
         loc1 = If(parts(1).Length > 0, Integer.Parse(parts(1)), -1)
         loc2 = If(parts(2).Length > 0, Integer.Parse(parts(2)), -1)
         If loc1 < 0 Then loc1 = loc2

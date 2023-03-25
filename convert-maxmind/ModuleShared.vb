@@ -167,13 +167,14 @@ Module ModuleShared
     End If
   End Function
 
-  Iterator Function ParseCSVLine(x As String) As IEnumerable(Of String)
+  Function ParseCSVLine(x As String) As List(Of String)
+    Dim rv = New List(Of String)
     Dim part As String = Nothing
     Dim pos As Integer = 0
     While TryGetCSVPart(x, pos, part)
-      Yield part
+      rv.Add(part)
     End While
+    Return rv
   End Function
-
 
 End Module

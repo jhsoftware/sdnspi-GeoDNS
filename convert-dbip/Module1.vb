@@ -18,14 +18,14 @@
 
     Console.WriteLine("Reading file input file: " & args(0))
     Dim p As Integer
-    Dim x As String, parts As String()
+    Dim x As String, parts As List(Of String)
     Dim itm As Item
     Dim LineNo As Integer
     While Not s3.EndOfStream
       x = s3.ReadLine()
       LineNo += 1
       If x.Length = 0 Then Continue While
-      parts = ParseCSVLine(x).ToArray()
+      parts = ParseCSVLine(x)
       If parts(2) = "ZZ" Then Continue While
       itm = New Item With {
         .From = System.Net.IPAddress.Parse(parts(0)).GetAddressBytes(),
