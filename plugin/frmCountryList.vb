@@ -104,18 +104,13 @@
       Exit Sub
     End Try
 
-    If ds.Countries.Count = 0 Then
-      MessageBox.Show("Data file does not contain any countries", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-      Exit Sub
-    End If
-
-    Dim tmp As New Dictionary(Of String, Object)
+    Dim tmp As New HashSet(Of String)
     For i = 0 To list1.Count - 1
-      tmp.Add(DirectCast(list1.Item(i), LstItm).ID, Nothing)
+      tmp.Add(DirectCast(list1.Item(i), LstItm).ID)
     Next
     Dim ncct = 0
-    For Each c In ds.Countries.Values
-      If Not tmp.ContainsKey(c.ID) Then ncct += 1
+    For Each c In ds.CountryIDs
+      If Not tmp.Contains(c) Then ncct += 1
     Next
 
     If ncct = 0 Then
@@ -128,9 +123,9 @@
     If ncct > 10 Then
       msg = "File contains " & ncct & " countries which are not already listed." & vbCrLf
     Else
-      msg = "File contains the following " & If(ncct > 1, ncct & " countries which are", "country which is") & " not already listed:" & vbCrLf & vbCrLf
-      For Each c In ds.Countries.Values
-        If Not tmp.ContainsKey(c.ID) Then msg &= c.ID & " - " & c.Name & vbCrLf
+      msg = "File contains the following " & If(ncct > 1, ncct & " country-IDs which are", "country-ID which is") & " not already listed:" & vbCrLf & vbCrLf
+      For Each c In ds.CountryIDs
+        If Not tmp.Contains(c) Then msg &= c & vbCrLf
       Next
     End If
     If MessageBox.Show(msg & vbCrLf & _
@@ -138,11 +133,14 @@
              MessageBoxButtons.YesNo, MessageBoxIcon.Question, _
              MessageBoxDefaultButton.Button1) = Windows.Forms.DialogResult.No Then Exit Sub
 
-    For Each c In ds.Countries.Values
-      If Not tmp.ContainsKey(c.ID) Then
-        list1.Add(New LstItm With {.ID = c.ID, .Name = c.Name, .Region = 0, .RegionName = "<none>"})
+    For Each c In ds.CountryIDs
+      If Not tmp.Contains(c) Then
+        list1.Add(New LstItm With {.ID = c, .Name = "", .Region = 0, .RegionName = "<none>"})
       End If
     Next
   End Sub
 
+  Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
+
+  End Sub
 End Class

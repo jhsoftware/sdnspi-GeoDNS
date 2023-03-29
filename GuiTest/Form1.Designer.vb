@@ -22,16 +22,39 @@ Partial Class Form1
   'Do not modify it using the code editor.
   <System.Diagnostics.DebuggerStepThrough()>
   Private Sub InitializeComponent()
-    Me.SuspendLayout()
-    '
-    'Form1
-    '
-    Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-    Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    Me.ClientSize = New System.Drawing.Size(800, 450)
-    Me.Name = "Form1"
-    Me.Text = "Form1"
-    Me.ResumeLayout(False)
+        Me.OptionsUI1 = New OptionsUI()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.SuspendLayout()
+        '
+        'OptionsUI1
+        '
+        Me.OptionsUI1.Location = New System.Drawing.Point(23, 28)
+        Me.OptionsUI1.Name = "OptionsUI1"
+        Me.OptionsUI1.Size = New System.Drawing.Size(361, 247)
+        Me.OptionsUI1.TabIndex = 0
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(330, 323)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 1
+        Me.Button1.Text = "Save"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Form1
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.OptionsUI1)
+        Me.Name = "Form1"
+        Me.Text = "Form1"
+        Me.ResumeLayout(False)
 
-  End Sub
+    End Sub
+
+    Friend WithEvents OptionsUI1 As OptionsUI
+    Friend WithEvents Button1 As Button
 End Class

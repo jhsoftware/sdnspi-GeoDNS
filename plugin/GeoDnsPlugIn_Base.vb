@@ -12,40 +12,38 @@ Public MustInherit Class GeoDnsPlugIn_Base
   MustOverride Sub BaseLog(ByVal s As String)
   MustOverride Sub BaseAsyncError(ByVal ex As System.Exception)
 
-  Protected Function LookUpServer(ByVal FromIP As SdnsIP) As String
+  Protected Function LookUpServer(FromIP As SdnsIP) As String
     If MyDataSet Is Nothing Then
       BaseLog("Cannot proccess DNS request - data file not loaded")
       Return Nothing
     End If
 
-    If FromIP.IPVersion <> 4 Then
-      Return MyConfig.DefaultServer
-    End If
-
-    Dim c = MyDataSet.Lookup(DirectCast(FromIP, SdnsIPv4))
-    If c Is Nothing Then
+    Dim cID = MyDataSet.Lookup(FromIP)
+    If cID Is Nothing Then
       BaseLog(FromIP.ToString & " not found in IP-to-Country database")
       Return MyConfig.DefaultServer
     End If
 
     Dim cc As GeoDnsConfig.Country
-    If Not MyConfig.Countries.TryGetValue(c.ID, cc) OrElse cc.Region <= 0 Then
-      BaseLog("No region specified for country: " & FromIP.ToString & " = " & c.ID & " - " & c.Name)
+    If Not MyConfig.Countries.TryGetValue(cID, cc) OrElse cc.Region <= 0 Then
+      Dim ctry As GeoDnsConfig.Country = Nothing
+      If Not MyConfig.Countries.TryGetValue(cID, ctry) Then ctry = Nothing
+      BaseLog("No region specified for country: " & FromIP.ToString & " = " & cID & " - " & (If(ctry Is Nothing, "?", ctry.Name)))
       Return MyConfig.DefaultServer
     End If
 
     Dim rg As GeoDnsConfig.Region
     If Not MyConfig.Regions.TryGetValue(cc.Region, rg) Then
-      BaseLog("No region specified for country: " & FromIP.ToString & " = " & c.ID & " - " & cc.Name)
+      BaseLog("No region specified for country: " & FromIP.ToString & " = " & cID & " - " & cc.Name)
       Return MyConfig.DefaultServer
     End If
 
     If String.IsNullOrEmpty(rg.Server) Then
-      BaseLog("No server specified for region: " & FromIP.ToString & " = " & c.ID & " - " & cc.Name & " = " & rg.Name)
+      BaseLog("No server specified for region: " & FromIP.ToString & " = " & cID & " - " & cc.Name & " = " & rg.Name)
       Return MyConfig.DefaultServer
     End If
 
-    BaseLog("Matched " & FromIP.ToString & " = " & c.ID & " - " & cc.Name & " = " & rg.Name & " -> " & rg.Server)
+    BaseLog("Matched " & FromIP.ToString & " = " & cID & " - " & cc.Name & " = " & rg.Name & " -> " & rg.Server)
     Return rg.Server
   End Function
 
@@ -98,12 +96,11 @@ Public MustInherit Class GeoDnsPlugIn_Base
     Return rv
   End Function
 
-  Public Async Function QuestionAsk(ByVal id As Integer, value As String, ByVal req As IRequestContext) As Threading.Tasks.Task(Of Boolean) Implements JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionAsk
+  Public Async Function QuestionAsk(id As Integer, value As String, req As IRequestContext) As Threading.Tasks.Task(Of Boolean) Implements JHSoftware.SimpleDNS.Plugin.IQuestions.QuestionAsk
     If req.FromIP Is Nothing Then Return False
-    If Not TypeOf req.FromIP Is SdnsIPv4 Then Return False
-    Dim c = MyDataSet.Lookup(DirectCast(req.FromIP, SdnsIPv4))
+    Dim c = MyDataSet.Lookup(req.FromIP)
     If c Is Nothing Then Return False
-    Return (c.ID = value.ToUpper)
+    Return (c = value.ToUpper)
   End Function
 
 #End Region

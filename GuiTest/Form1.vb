@@ -2,14 +2,14 @@
 
 Public Class Form1
 
-  Dim oui As JHSoftware.SimpleDNS.Plugin.OptionsUI
-  ' Dim pi As IPlugInBase
-
   Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
-    Dim pi = New GeoDnsPlugIn
-    oui = pi.GetOptionsUI(Guid.NewGuid, "")
-    Me.Controls.Add(oui)
+    Dim pi = New GeoDnsPlugIn_CNAME
+    OptionsUI1.UseClone = True
+    OptionsUI1.LoadData(Nothing)
+  End Sub
 
-    oui.LoadData(Nothing)
+  Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Dim x = OptionsUI1.SaveData()
+    Stop
   End Sub
 End Class

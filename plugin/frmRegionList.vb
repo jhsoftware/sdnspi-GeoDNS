@@ -8,12 +8,13 @@ Public Class frmRegionList
     For Each r In OptUI.Cfg.Regions.Values
       List1.Add(New LstItm With {.ID = r.ID, .Name = r.Name, .Server = r.Server})
     Next
-    List1.Columns(1).Text = "Server alias"
+    List1.Columns(1).Text = If(OptUI.UseClone, "Clone from", "Server alias")
   End Sub
 
   Private Sub List1_EditItem(ByVal curItem As Object) Handles List1.EditItem
     Dim frm = New frmRegion
     frm.Lst = List1
+    If OptUI.UseClone Then frm.lblServer.Text = "Clone from host name:"
     If curItem IsNot Nothing Then
       With DirectCast(curItem, LstItm)
         frm.txtName.Text = .Name

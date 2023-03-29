@@ -1,8 +1,12 @@
 ﻿Public Class OptionsUI
 
   Friend Cfg As GeoDnsConfig
+  Public UseClone As Boolean
 
   Public Overrides Sub LoadData(ByVal config As String)
+    If UseClone Then
+      lblDefault.Text = "Default clone from host name:"
+    End If
     If config Is Nothing Then
       REM new instance
       Cfg = GeoDnsConfig.LoadDefault
@@ -45,17 +49,6 @@
     txtFile.Text = OpenFileDialog1.FileName
   End Sub
 
-  Private Sub lnkSoft77_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles lnkSoft77.LinkClicked
-    Try
-      System.Diagnostics.Process.Start(lnkSoft77.Text.Substring(lnkSoft77.LinkArea.Start, lnkSoft77.LinkArea.Length))
-    Catch ex As Exception
-      MessageBox.Show("Failed to open link in your default Internet browser" & vbCrLf & _
-                      vbCrLf & _
-                      "Error: " & ex.Message, _
-                      "Internet Link", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    End Try
-  End Sub
-
   Private Sub btnTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTest.Click
     Dim cap = "Test IP-to-Country data file"
     If RemoteGUI Then MessageBox.Show("This function is not available during remote management", _
@@ -80,32 +73,34 @@
     End Try
     Me.Cursor = Cursors.Default
 
-    If ds.IpRanges.Count = 0 Then
+    If ds.Ip4Ranges.Count + ds.Ip4Ranges.Count = 0 Then
       MessageBox.Show("No IP-to-Country entries found in file", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
       Exit Sub
     End If
 
     Dim x = ""
-    Dim ip As SdnsIPv4
-    Dim c As ITCDataSet.Country
+    Dim ip As SdnsIP
+    Dim cID As String ' ITCDataSet.Country
 
     Do
-      x = InputBox("IP-to-Country data file contains " & _
-                   ds.OrigRangeCt & " IP address ranges (" & ds.IpRanges.Count & " merged) in " & _
-                   ds.Countries.Count & " countries." & vbCrLf & vbCrLf & _
+      x = InputBox("IP-to-Country data file contains " &
+                  (ds.Ip4Ranges.Count + ds.Ip6Ranges.Count) & " IP address ranges in " &
+                   ds.CountryIDs.Count & " countries." & vbCrLf & vbCrLf &
                    "Enter IP address to look up:", cap, x)
       If x.Length = 0 Then Exit Sub
 
-      If Not SdnsIPv4.TryParse(x.Trim, ip) Then
+      If Not SdnsIP.TryParse(x.Trim, ip) Then
         MessageBox.Show("Invalid IP address", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Continue Do
       End If
 
-      c = ds.Lookup(ip)
-      If c Is Nothing Then
+      cID = ds.Lookup(ip)
+      If cID Is Nothing Then
         MessageBox.Show(ip.ToString & " not found in data file", cap, MessageBoxButtons.OK, MessageBoxIcon.Information)
       Else
-        MessageBox.Show(ip.ToString & " = " & c.ID & " - " & c.Name, cap, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Dim ctry As GeoDnsConfig.Country = Nothing
+        If Not Cfg.Countries.TryGetValue(cID, ctry) Then ctry = Nothing
+        MessageBox.Show(ip.ToString & " = " & cID & " - " & If(ctry Is Nothing, "?", ctry.Name), cap, MessageBoxButtons.OK, MessageBoxIcon.Information)
       End If
     Loop
 

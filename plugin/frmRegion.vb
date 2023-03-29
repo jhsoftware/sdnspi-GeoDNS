@@ -15,7 +15,7 @@ Public Class frmRegion
     If txtServer.Text.Trim.Length > 0 Then
       Dim dom As DomName
       If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
-        MessageBox.Show("Invalid server alias", "Region", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        MessageBox.Show("Invalid host name", "Region", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Exit Sub
       End If
       txtServer.Text = dom.ToString

@@ -76,6 +76,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GeoDnsPlugIn_Base.vb" />
+    <Compile Include="GeoDnsPlugIn_Clone.vb" />
     <Compile Include="GeoDnsPlugIn_CNAME.vb" />
     <Compile Include="ITCDataSet.vb" />
     <Compile Include="frmCountry.Designer.vb">

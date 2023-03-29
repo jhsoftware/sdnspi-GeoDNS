@@ -1,10 +1,13 @@
-v. 2.0.0.0901 - 2023.03.25
+v. 2.0.0.0901 - 2023.03.29
 --------------------------
 - Added support for IPv6 addresses
-- New independent data file format - see data-file-format.md (replacing that of http://software77.net/geo-ip/ which is no more).
+- New independent data file format - <see data-file-format.md> - replacing defunct http://software77.net/geo-ip/
 - Added converter utility for data files from https://db-ip.com/db/download/ip-to-country-lite
 - Added converter utility for data files from https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
-- Removed "IP" plug-in variant (keeping CNAME variant only).
+- Added "Clone" plug-in variant.
+- Removed "IP" plug-in variant.
+- Added 30 countries to default list
+- New plug-in versioning scheme - major.minor.rev (semantic) + .simplednsplus-version(0901)
 
 
 v. 9.1.1 (1.0.0.0901) - 2021-10-28
