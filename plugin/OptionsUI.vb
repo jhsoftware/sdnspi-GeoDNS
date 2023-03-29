@@ -1,19 +1,12 @@
 ﻿Public Class OptionsUI
 
   Friend Cfg As GeoDnsConfig
-  Friend UseCNAME As Boolean
-  Friend IpCtrl As ctlIP
+  Public UseClone As Boolean
 
   Public Overrides Sub LoadData(ByVal config As String)
-    If Not UseCNAME Then
-      lblDefault.Text = "Default server IP address:"
-      IpCtrl = New ctlIP With {.IPVersion = IPVersionEnum.IPv4} ' GetIPCtrl(True, False)
-      Me.Controls.Add(IpCtrl)
-      IpCtrl.Location = txtServer.Location
-      IpCtrl.TabIndex = txtServer.TabIndex
-      txtServer.Visible = False
+    If UseClone Then
+      lblDefault.Text = "Default clone from host name:"
     End If
-
     If config Is Nothing Then
       REM new instance
       Cfg = GeoDnsConfig.LoadDefault
@@ -24,13 +17,8 @@
       txtFile.Text = Cfg.DataFile
       chkMonitor.Checked = Cfg.AutoReload
       CtlTTL1.Value = Cfg.RespTTL
-      If UseCNAME Then
-        txtServer.Text = Cfg.DefaultServer
-      Else
-        IpCtrl.Text = Cfg.DefaultServer
-      End If
+      txtServer.Text = Cfg.DefaultServer
     End If
-
   End Sub
 
   Private Sub btnCountries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCountries.Click
@@ -61,17 +49,6 @@
     txtFile.Text = OpenFileDialog1.FileName
   End Sub
 
-  Private Sub lnkSoft77_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles lnkSoft77.LinkClicked
-    Try
-      System.Diagnostics.Process.Start(lnkSoft77.Text.Substring(lnkSoft77.LinkArea.Start, lnkSoft77.LinkArea.Length))
-    Catch ex As Exception
-      MessageBox.Show("Failed to open link in your default Internet browser" & vbCrLf & _
-                      vbCrLf & _
-                      "Error: " & ex.Message, _
-                      "Internet Link", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    End Try
-  End Sub
-
   Private Sub btnTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTest.Click
     Dim cap = "Test IP-to-Country data file"
     If RemoteGUI Then MessageBox.Show("This function is not available during remote management", _
@@ -96,32 +73,34 @@
     End Try
     Me.Cursor = Cursors.Default
 
-    If ds.IpRanges.Count = 0 Then
+    If ds.Ip4Ranges.Count + ds.Ip4Ranges.Count = 0 Then
       MessageBox.Show("No IP-to-Country entries found in file", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
       Exit Sub
     End If
 
     Dim x = ""
-    Dim ip As SdnsIPv4
-    Dim c As ITCDataSet.Country
+    Dim ip As SdnsIP
+    Dim cID As String ' ITCDataSet.Country
 
     Do
-      x = InputBox("IP-to-Country data file contains " & _
-                   ds.OrigRangeCt & " IP address ranges (" & ds.IpRanges.Count & " merged) in " & _
-                   ds.Countries.Count & " countries." & vbCrLf & vbCrLf & _
+      x = InputBox("IP-to-Country data file contains " &
+                  (ds.Ip4Ranges.Count + ds.Ip6Ranges.Count) & " IP address ranges in " &
+                   ds.CountryIDs.Count & " countries." & vbCrLf & vbCrLf &
                    "Enter IP address to look up:", cap, x)
       If x.Length = 0 Then Exit Sub
 
-      If Not SdnsIPv4.TryParse(x.Trim, ip) Then
+      If Not SdnsIP.TryParse(x.Trim, ip) Then
         MessageBox.Show("Invalid IP address", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Continue Do
       End If
 
-      c = ds.Lookup(ip)
-      If c Is Nothing Then
+      cID = ds.Lookup(ip)
+      If cID Is Nothing Then
         MessageBox.Show(ip.ToString & " not found in data file", cap, MessageBoxButtons.OK, MessageBoxIcon.Information)
       Else
-        MessageBox.Show(ip.ToString & " = " & c.ID & " - " & c.Name, cap, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Dim ctry As GeoDnsConfig.Country = Nothing
+        If Not Cfg.Countries.TryGetValue(cID, ctry) Then ctry = Nothing
+        MessageBox.Show(ip.ToString & " = " & cID & " - " & If(ctry Is Nothing, "?", ctry.Name), cap, MessageBoxButtons.OK, MessageBoxIcon.Information)
       End If
     Loop
 
@@ -150,25 +129,13 @@
       End If
     End If
 
-    If UseCNAME Then
-      If txtServer.Text.Trim.Length = 0 Then
-        MessageBox.Show("Default server alias is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
-      If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
-        MessageBox.Show("Invalid default server alias", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
-    Else
-      If IpCtrl.Text.Trim.Length = 0 Then
-        MessageBox.Show("Default server IP address is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
-      Dim ip As SdnsIPv4
-      If Not SdnsIPv4.TryParse(IpCtrl.Text.Trim, ip) Then
-        MessageBox.Show("Invalid default server IP address", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Return False
-      End If
+    If txtServer.Text.Trim.Length = 0 Then
+      MessageBox.Show("Default server alias is required", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
+      Return False
+    End If
+    If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
+      MessageBox.Show("Invalid default server alias", cap, MessageBoxButtons.OK, MessageBoxIcon.Error)
+      Return False
     End If
 
     Return True
@@ -179,7 +146,7 @@
     Cfg.DataFile = txtFile.Text.Trim
     Cfg.AutoReload = chkMonitor.Checked
     Cfg.RespTTL = CtlTTL1.Value
-    Cfg.DefaultServer = If(UseCNAME, txtServer.Text.Trim, IpCtrl.Text.Trim)
+    Cfg.DefaultServer = txtServer.Text.Trim
     Return Cfg.Save
   End Function
 

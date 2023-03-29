@@ -4,3 +4,4 @@ country-data/
 test-data/
 *.suo
 *.user
+.vs

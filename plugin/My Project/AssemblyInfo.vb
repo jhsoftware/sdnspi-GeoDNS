@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("GeoDNS Plug-In")> 
 <Assembly: AssemblyCompany("JH Software ApS")> 
 <Assembly: AssemblyProduct("Simple DNS Plus")>
-<Assembly: AssemblyCopyright("Copyright © 2009-2021 JH Software ApS")>
+<Assembly: AssemblyCopyright("Copyright © 2009-2023 JH Software ApS")>
 <Assembly: AssemblyTrademark("Simple DNS Plus")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("9.1.1.0")>
-<Assembly: AssemblyFileVersion("9.1.1.0")>
+<Assembly: AssemblyVersion("2.0.0.0901")>
+<Assembly: AssemblyFileVersion("2.0.0.0901")>

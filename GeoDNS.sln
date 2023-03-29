@@ -1,9 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GeoDNS", "GeoDNS.vbproj", "{5DCBCE5F-6563-49E4-879F-E09C08FB1043}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GeoDNS", "plugin\GeoDNS.vbproj", "{5DCBCE5F-6563-49E4-879F-E09C08FB1043}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GuiTest", "GuiTest\GuiTest.vbproj", "{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "convert-dbip", "convert-dbip\convert-dbip.vbproj", "{325ED79C-5CC9-4942-81E8-C8E5B9A5153B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "convert-maxmind", "convert-maxmind\convert-maxmind.vbproj", "{708A0851-FBEC-4DB2-BD2A-390647E1F400}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F07B5977-98C5-424D-9287-D5AAB561CCCA}"
+	ProjectSection(SolutionItems) = preProject
+		data-file-format.md = data-file-format.md
+		readme.md = readme.md
+		release-notes.txt = release-notes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +28,23 @@ Global
 		{5DCBCE5F-6563-49E4-879F-E09C08FB1043}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DCBCE5F-6563-49E4-879F-E09C08FB1043}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DCBCE5F-6563-49E4-879F-E09C08FB1043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE0C82B-50BE-4C0E-88A6-81BFDD13B934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325ED79C-5CC9-4942-81E8-C8E5B9A5153B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325ED79C-5CC9-4942-81E8-C8E5B9A5153B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325ED79C-5CC9-4942-81E8-C8E5B9A5153B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325ED79C-5CC9-4942-81E8-C8E5B9A5153B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{708A0851-FBEC-4DB2-BD2A-390647E1F400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{708A0851-FBEC-4DB2-BD2A-390647E1F400}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{708A0851-FBEC-4DB2-BD2A-390647E1F400}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{708A0851-FBEC-4DB2-BD2A-390647E1F400}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BDD68650-8BF9-44CC-94AB-6EF8724BE49D}
 	EndGlobalSection
 EndGlobal

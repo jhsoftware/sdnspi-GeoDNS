@@ -4,7 +4,6 @@ Public Class frmRegion
 
   Friend CurID As Integer = 0
   Friend Lst As AERListBoxMC
-  Friend IpCtrl As ctlIP
 
   Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
     If txtName.Text.Trim.Length = 0 Then
@@ -12,32 +11,20 @@ Public Class frmRegion
       Exit Sub
     End If
 
-    If IpCtrl IsNot Nothing Then
-      If IpCtrl.Text.Trim.ToLower = "<default>" Then IpCtrl.Text = ""
-      If IpCtrl.Text.Trim.Length > 0 Then
-        Dim ip As SdnsIPv4
-        If Not SdnsIPv4.TryParse(IpCtrl.Text.Trim, ip) Then
-          MessageBox.Show("Invalid server IP address", "Region", MessageBoxButtons.OK, MessageBoxIcon.Error)
-          Exit Sub
-        End If
-        IpCtrl.Text = ip.ToString
+    If txtServer.Text.Trim.ToLower = "<default>" Then txtServer.Text = ""
+    If txtServer.Text.Trim.Length > 0 Then
+      Dim dom As DomName
+      If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
+        MessageBox.Show("Invalid host name", "Region", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Exit Sub
       End If
-    Else
-      If txtServer.Text.Trim.ToLower = "<default>" Then txtServer.Text = ""
-      If txtServer.Text.Trim.Length > 0 Then
-        Dim dom As DomName
-        If Not DomName.TryParse(txtServer.Text.Trim, dom) Then
-          MessageBox.Show("Invalid server alias", "Region", MessageBoxButtons.OK, MessageBoxIcon.Error)
-          Exit Sub
-        End If
-        txtServer.Text = dom.ToString
-      End If
+      txtServer.Text = dom.ToString
     End If
 
     Dim itm As New frmRegionList.LstItm
     itm.ID = CurID
     itm.Name = txtName.Text.Trim
-    itm.Server = If(IpCtrl IsNot Nothing, IpCtrl.Text, txtServer.Text).Trim
+    itm.Server = txtServer.Text.Trim
 
     If Not Lst.CompleteEditItem(itm, AddressOf ItemsEqual) Then Exit Sub
 

@@ -1,9 +1,9 @@
 ﻿Imports System.Threading.Tasks
 Imports JHSoftware.SimpleDNS.Plugin
 
-Public Class GeoDnsPlugIn_IP
+Public Class GeoDnsPlugIn_Clone
   Inherits GeoDnsPlugIn_Base
-  Implements ILookupHost
+  Implements ICloneAnswer
   Implements IOptionsUI
 
   Public Property Host As IHost Implements IPlugInBase.Host
@@ -14,28 +14,29 @@ Public Class GeoDnsPlugIn_IP
 
   Public Function GetPlugInTypeInfo() As TypeInfo Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.GetTypeInfo
     Dim rv As TypeInfo
-    rv.Name = "GeoDNS (IP)"
-    rv.Description = "Serve different IP addresses depending on which country a DNS request originates from"
+    rv.Name = "GeoDNS (Clone)"
+    rv.Description = "Serve host records cloned from different source records depending on which country a DNS request originates from"
     rv.InfoURL = "https://simpledns.plus/plugin-geodns"
     Return rv
   End Function
 
-  Public Async Function LookupHost(name As DomName, ipv6 As Boolean, req As IRequestContext) As Threading.Tasks.Task(Of LookupResult(Of SdnsIP)) Implements JHSoftware.SimpleDNS.Plugin.ILookupHost.LookupHost
-    If ipv6 OrElse name <> MyConfig.HostName Then Return Nothing
-    Dim serv = LookUpServer(req.FromIP)
+  Public Async Function LookupCloneAnswer(ctx As IRequestContext) As Task(Of ICloneAnswer.Result) Implements ICloneAnswer.LookupCloneAnswer
+    If (ctx.QType <> DNSRecType.A AndAlso ctx.QType <> DNSRecType.AAAA) OrElse
+       ctx.QName <> MyConfig.HostName Then Return Nothing
+    Dim serv = LookUpServer(ctx.FromIP)
     If serv Is Nothing Then Return Nothing
-    Return New LookupResult(Of SdnsIP) With {.Value = SdnsIPv4.Parse(serv), .TTL = MyConfig.RespTTL}
+    Return New ICloneAnswer.Result With {.CloneFromZone = DomName.Parse(serv), .PrefixLabels = 0, .ForceAA = False}
   End Function
 
   Public Function GetOptionsUI(ByVal instanceID As System.Guid, ByVal dataPath As String) As JHSoftware.SimpleDNS.Plugin.OptionsUI Implements JHSoftware.SimpleDNS.Plugin.IOptionsUI.GetOptionsUI
-    Return New OptionsUI With {.UseCNAME = False}
+    Return New OptionsUI
   End Function
 
   Public Sub LoadConfig(ByVal config As String, ByVal instanceID As System.Guid, ByVal dataPath As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig
     MyConfig = GeoDnsConfig.Load(config)
   End Sub
 
-  Private Async Function IPlugInBase_StartService() As Task Implements IPlugInBase.StartService
+  Public Async Function StartService() As Threading.Tasks.Task Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.StartService
     BaseStartService()
   End Function
 
@@ -47,7 +48,7 @@ Public Class GeoDnsPlugIn_IP
     Host.LogLine(s)
   End Sub
 
-  Public Overrides Sub BaseAsyncError(ex As System.Exception)
+  Public Overrides Sub BaseAsyncError(ex As Exception)
     Host.AsyncError(ex)
   End Sub
 

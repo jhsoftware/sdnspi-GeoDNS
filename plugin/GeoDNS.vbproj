@@ -52,7 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="sdnscommon">
-      <HintPath>..\..\private\sdns\sdnscommon\bin\Release\sdnscommon.dll</HintPath>
+      <HintPath>..\sdnscommon\sdnscommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -76,6 +76,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GeoDnsPlugIn_Base.vb" />
+    <Compile Include="GeoDnsPlugIn_Clone.vb" />
     <Compile Include="GeoDnsPlugIn_CNAME.vb" />
     <Compile Include="ITCDataSet.vb" />
     <Compile Include="frmCountry.Designer.vb">
@@ -103,7 +104,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GeoDnsConfig.vb" />
-    <Compile Include="GeoDnsPlugIn_IP.vb" />
     <Compile Include="modPipeEncoder.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

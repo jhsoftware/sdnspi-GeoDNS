@@ -19,12 +19,13 @@ Public Class GeoDnsPlugIn_CNAME
     Return rv
   End Function
 
-  Public Async Function Lookup(request As IRequestContext) As Threading.Tasks.Task(Of DNSAnswer) Implements JHSoftware.SimpleDNS.Plugin.ILookupAnswer.LookupAnswer
-    If request.QName <> MyConfig.HostName Then Return Nothing
-    Dim serv = LookUpServer(request.FromIP)
+  Public Async Function Lookup(ctx As IRequestContext) As Threading.Tasks.Task(Of DNSAnswer) Implements JHSoftware.SimpleDNS.Plugin.ILookupAnswer.LookupAnswer
+    If (ctx.QType <> DNSRecType.A AndAlso ctx.QType <> DNSRecType.AAAA) OrElse
+       ctx.QName <> MyConfig.HostName Then Return Nothing
+    Dim serv = LookUpServer(ctx.FromIP)
     If serv Is Nothing Then Return Nothing
     Dim rv = New DNSAnswer
-    rv.Answer.Add(New DNSRecord With {.Name = request.QName,
+    rv.Answer.Add(New DNSRecord With {.Name = ctx.QName,
                                        .RRType = DNSRecType.CNAME,
                                        .Data = serv,
                                        .TTL = MyConfig.RespTTL})
@@ -32,7 +33,7 @@ Public Class GeoDnsPlugIn_CNAME
   End Function
 
   Public Function GetOptionsUI(ByVal instanceID As System.Guid, ByVal dataPath As String) As JHSoftware.SimpleDNS.Plugin.OptionsUI Implements JHSoftware.SimpleDNS.Plugin.IOptionsUI.GetOptionsUI
-    Return New OptionsUI With {.UseCNAME = True}
+    Return New OptionsUI
   End Function
 
   Public Sub LoadConfig(ByVal config As String, ByVal instanceID As System.Guid, ByVal dataPath As String) Implements JHSoftware.SimpleDNS.Plugin.IPlugInBase.LoadConfig
