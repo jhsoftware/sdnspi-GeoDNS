@@ -1,3 +1,7 @@
+v. 2.0.1.0901-B - 2023.10.03
+----------------------------
+- Updated maxmind converter utility to support paid ("GeoIP2") data files.
+
 v. 2.0.1.0901 - 2023.09.29
 --------------------------
 - Updated "CNAME" plug-in variant to use ILookupRecord interface (new in Simple DNS Plus 9.1.115)

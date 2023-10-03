@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("convert-maxmind")>
-<Assembly: AssemblyDescription("Convert Maxmind geolite2 file to .geodns format")>
+<Assembly: AssemblyDescription("Convert Maxmind GeoLite2 / GeoIP2 file to .geodns format")>
 <Assembly: AssemblyCompany("JH Software")>
 <Assembly: AssemblyProduct("Simple DNS Plus")>
 <Assembly: AssemblyCopyright("Copyright © 2023 JH Software")>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("1.1.0.0")>
+<Assembly: AssemblyFileVersion("1.1.0.0")>

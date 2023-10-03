@@ -35,8 +35,7 @@ Module Module1
   Public Locations As New Dictionary(Of Integer, String)
 
   Function ReadLocations() As Boolean
-    Dim EntryName = "GeoLite2-Country-Locations-en.csv"
-    Dim sr = OpenZipEntryReader(EntryName)
+    Dim sr = OpenZipEntryReader("GeoLite2-Country-Locations-en.csv", "GeoIP2-Country-Locations-en.csv")
     If sr Is Nothing Then Return False
     sr.ReadLine() 'first line is header
     Dim LineNo = 1
@@ -57,8 +56,7 @@ Module Module1
   End Function
 
   Function ReadIpList(ipVer As Integer) As Boolean
-    Dim EntryName = "GeoLite2-Country-Blocks-IPv" & ipVer & ".csv"
-    Dim sr = OpenZipEntryReader(EntryName)
+    Dim sr = OpenZipEntryReader("GeoLite2-Country-Blocks-IPv" & ipVer & ".csv", "GeoIP2-Country-Blocks-IPv" & ipVer & ".csv")
     If sr Is Nothing Then Return False
     sr.ReadLine() 'first line is header
     Dim LineNo = 1
@@ -86,15 +84,16 @@ Module Module1
     Return True
   End Function
 
-  Function OpenZipEntryReader(name As String) As System.IO.StreamReader
-    name = name.ToLower()
+  Function OpenZipEntryReader(name1 As String, name2 As String) As System.IO.StreamReader
+    name1 = name1.ToLower()
+    name2 = name2.ToLower()
     For Each ze In zip.Entries
-      If ze.Name.ToLower() = name Then
-        Console.WriteLine("Reading zip archive entry '" & name & "'")
+      If ze.Name.ToLower() = name1 Or ze.Name.ToLower() = name2 Then
+        Console.WriteLine("Reading zip archive entry '" & ze.Name.ToLower() = name1 & "'")
         Return New System.IO.StreamReader(ze.Open())
       End If
     Next
-    Console.WriteLine("Error: zip archive does not contains a '" & name & "' file")
+    Console.WriteLine("Error: zip archive does not contains a '" & name1 & "' or '" & name2 & "' file")
     Return Nothing
   End Function
 
