@@ -89,7 +89,7 @@ Module Module1
     name2 = name2.ToLower()
     For Each ze In zip.Entries
       If ze.Name.ToLower() = name1 Or ze.Name.ToLower() = name2 Then
-        Console.WriteLine("Reading zip archive entry '" & ze.Name.ToLower() = name1 & "'")
+        Console.WriteLine("Reading zip archive entry '" & ze.Name & "'")
         Return New System.IO.StreamReader(ze.Open())
       End If
     Next
